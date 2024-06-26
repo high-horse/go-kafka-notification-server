@@ -1,0 +1,11 @@
+Get docker image -linux
+curl -sSL https://raw.githubusercontent.com/bitnami/containers/main/bitnami/kafka/docker-compose.yml -o docker-compose.yml
+
+Get docker image -windows
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/bitnami/containers/main/bitnami/kafka/docker-compose.yml" -OutFile "docker-compose.yml"
+
+Run the following command to start the Kafka and Zookeeper services:
+docker-compose up -d
+
+Check the running Docker containers:
+docker ps
