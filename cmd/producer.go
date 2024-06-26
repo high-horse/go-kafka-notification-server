@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	models "kafka-notify/pkg"
+	"net/http"
 	"strconv"
 
 	"github.com/IBM/sarama"
@@ -78,4 +79,46 @@ func sendKafkaMesage(
 
 	_, _, err = producer.SendMessage(msg)
 	return err
+}
+
+func sendMessageHandler(
+	producer sarama.SyncProducer,
+	users []models.User,
+) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		fromID, err := getIDFromRequest("fromID", ctx)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		toID, err := getIDFromRequest("toID", ctx)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+
+		err  = sendKafkaMesage(producer, users, ctx, fromID, toID)
+		if errors.Is(err, ErrUserNotFoundInProducer) {
+			ctx.JSON(http.StatusBadRequest, gin.H{"message": "user not found"})
+			return
+		}
+
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
+		}
+
+		ctx.JSON(http.StatusOK, gin.H{"message": "notification sent successfully"})
+	}
+}
+
+func setupProducer() (sarama.SyncProducer, error) {
+	config := sarama.NewConfig()
+	config.Producer.Return.Successes = true
+	producer, err := sarama.NewSyncProducer([]string{KafkaServerAddress}, config)
+	if err != nil {
+		return nil, err
+	}
+	return producer, nil
 }
