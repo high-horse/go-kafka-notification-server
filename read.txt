@@ -9,3 +9,10 @@ docker-compose up -d
 
 Check the running Docker containers:
 docker ps
+
+
+source 
+https://www.freecodecamp.org/news/build-a-real-time-notification-system-with-go-and-kafka/
+
+dockerhub kafka
+https://hub.docker.com/r/bitnami/kafka/
