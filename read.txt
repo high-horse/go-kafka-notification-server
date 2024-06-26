@@ -16,3 +16,15 @@ https://www.freecodecamp.org/news/build-a-real-time-notification-system-with-go-
 
 dockerhub kafka
 https://hub.docker.com/r/bitnami/kafka/
+
+
+send message
+curl -X POST http://localhost:8080/send -d "fromID=2&toID=1&message=Bruno started following you."
+Invoke-RestMethod -Uri http://localhost:8080/send -Method Post -Body @{fromID='2'; toID='1'; message='Bruno started following you.'} -ContentType "application/x-www-form-urlencoded"
+
+
+curl -X POST http://localhost:8080/send -d "fromID=4&toID=1&message=Lena liked your post: 'My weekend getaway!'"
+Invoke-RestMethod -Uri http://localhost:8080/send -Method Post -Body @{fromID='4'; toID='1'; message="Lena liked your post: 'My weekend getaway!'"} -ContentType "application/x-www-form-urlencoded"
+
+Retrieving notifications for User 1
+curl http://localhost:8081/notifications/1
