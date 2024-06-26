@@ -18,6 +18,10 @@ dockerhub kafka
 https://hub.docker.com/r/bitnami/kafka/
 
 
+run the servers
+go run cmd/producer/producer.go
+go run cmd/consumer/consumer.go
+
 send message
 curl -X POST http://localhost:8080/send -d "fromID=2&toID=1&message=Bruno started following you."
 Invoke-RestMethod -Uri http://localhost:8080/send -Method Post -Body @{fromID='2'; toID='1'; message='Bruno started following you.'} -ContentType "application/x-www-form-urlencoded"
